@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Carte Calcio</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    text-align:center;
+    background:#f5f5f5;
+    margin:0;
+    padding:20px;
+}
+
+h1{
+    font-size:2rem;
+}
+
+button{
+    padding:15px 30px;
+    font-size:20px;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    background:black;
+    color:white;
+}
+
+#cardContainer{
+    margin-top:20px;
+}
+
+img{
+    max-width:90%;
+    max-height:70vh;
+    border-radius:15px;
+    box-shadow:0 0 15px rgba(0,0,0,.3);
+}
+
+#timer{
+    font-size:50px;
+    font-weight:bold;
+    margin-top:15px;
+}
+</style>
+
+</head>
+<body>
+
+<h1>?? Carte Calcio</h1>
+
+<button onclick="drawCard()">PESCA CARTA</button>
+
+<div id="cardContainer"></div>
+
+<div id="timer"></div>
+
+<script>
+
+const cards = [
+
+{
+name:"Carta 1",
+image:"carte/1.jpg",
+time:120
+},
+
+{
+name:"Carta 2",
+image:"carte/2.jpg",
+time:120
+},
+
+{
+name:"Carta 3",
+image:"carte/3.jpg",
+time:120
+},
+
+{
+name:"Carta 4",
+image:"carte/4.jpg",
+time:60
+},
+
+{
+name:"Carta 5",
+image:"carte/5.jpg",
+time:60
+},
+
+{
+name:"Carta 6",
+image:"carte/6.jpg",
+time:120
+},
+
+{
+name:"Carta 7",
+image:"carte/7.jpg",
+time:120
+},
+
+{
+name:"Carta 8",
+image:"carte/8.jpg",
+time:120
+},
+
+{
+name:"Carta 9",
+image:"carte/9.jpg",
+time:120
+},
+
+{
+name:"Carta 10",
+image:"carte/10.jpg",
+time:120
+},
+
+{
+name:"Carta 11",
+image:"carte/11.jpg",
+time:120
+},
+
+{
+name:"Carta 12",
+image:"carte/12.jpg",
+time:120
+},
+
+{
+name:"Carta 13",
+image:"carte/13.jpg",
+time:120
+},
+
+{
+name:"Carta 14",
+image:"carte/14.jpg",
+time:120
+},
+
+{
+name:"Carta 15",
+image:"carte/15.jpg",
+time:120
+}
+
+];
+
+let deck = [...cards];
+let interval;
+
+function drawCard(){
+
+if(deck.length===0){
+    deck=[...cards];
+    alert("Mazzo rimescolato!");
+}
+
+const index=Math.floor(Math.random()*deck.length);
+const card=deck.splice(index,1)[0];
+
+document.getElementById("cardContainer").innerHTML=
+`<img src="${card.image}" alt="">`;
+
+startTimer(card.time);
+
+}
+
+function startTimer(seconds){
+
+clearInterval(interval);
+
+let time=seconds;
+
+update();
+
+interval=setInterval(()=>{
+
+time--;
+
+update();
+
+if(time<=0){
+clearInterval(interval);
+document.getElementById("timer").innerHTML="? EFFETTO TERMINATO";
+}
+
+},1000);
+
+function update(){
+
+let m=Math.floor(time/60);
+let s=time%60;
+
+document.getElementById("timer").innerHTML=
+`${m}:${s.toString().padStart(2,"0")}`;
+
+}
+
+}
+
+</script>
+
+</body>
+</html>
