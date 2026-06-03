@@ -3,9 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Carte Calcio</title>
+
+<title>Carte Speciali Calcio</title>
 
 <style>
+
 body{
     font-family: Arial, sans-serif;
     text-align:center;
@@ -16,6 +18,7 @@ body{
 
 h1{
     font-size:2rem;
+    margin-bottom:10px;
 }
 
 button{
@@ -26,6 +29,17 @@ button{
     cursor:pointer;
     background:black;
     color:white;
+    margin-bottom:20px;
+}
+
+button:hover{
+    background:#333;
+}
+
+#cardName{
+    font-size:28px;
+    font-weight:bold;
+    margin-bottom:15px;
 }
 
 #cardContainer{
@@ -34,140 +48,95 @@ button{
 
 img{
     max-width:90%;
-    max-height:70vh;
+    max-height:65vh;
     border-radius:15px;
     box-shadow:0 0 15px rgba(0,0,0,.3);
 }
 
 #timer{
-    font-size:50px;
+    font-size:60px;
     font-weight:bold;
-    margin-top:15px;
+    margin-top:20px;
+    color:#d62828;
 }
+
+#cardsLeft{
+    margin-top:10px;
+    font-size:18px;
+    color:#555;
+}
+
 </style>
 
 </head>
+
 <body>
 
-<h1>?? Carte Calcio</h1>
+<h1>🃏 Carte Speciali Calcio</h1>
 
 <button onclick="drawCard()">PESCA CARTA</button>
 
-<div id="cardContainer"></div>
+<h2 id="cardName">Premi "PESCA CARTA"</h2>
+
+<div id="cardContainer">
+    <img src="retro.jpg" alt="Retro Carta">
+</div>
 
 <div id="timer"></div>
+
+<div id="cardsLeft"></div>
+
+<audio id="alarm">
+<source src="https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg" type="audio/ogg">
+</audio>
 
 <script>
 
 const cards = [
 
-{
-name:"Carta 1",
-image:"carte/1.jpg",
-time:120
-},
-
-{
-name:"Carta 2",
-image:"carte/2.jpg",
-time:120
-},
-
-{
-name:"Carta 3",
-image:"carte/3.jpg",
-time:120
-},
-
-{
-name:"Carta 4",
-image:"carte/4.jpg",
-time:60
-},
-
-{
-name:"Carta 5",
-image:"carte/5.jpg",
-time:60
-},
-
-{
-name:"Carta 6",
-image:"carte/6.jpg",
-time:120
-},
-
-{
-name:"Carta 7",
-image:"carte/7.jpg",
-time:120
-},
-
-{
-name:"Carta 8",
-image:"carte/8.jpg",
-time:120
-},
-
-{
-name:"Carta 9",
-image:"carte/9.jpg",
-time:120
-},
-
-{
-name:"Carta 10",
-image:"carte/10.jpg",
-time:120
-},
-
-{
-name:"Carta 11",
-image:"carte/11.jpg",
-time:120
-},
-
-{
-name:"Carta 12",
-image:"carte/12.jpg",
-time:120
-},
-
-{
-name:"Carta 13",
-image:"carte/13.jpg",
-time:120
-},
-
-{
-name:"Carta 14",
-image:"carte/14.jpg",
-time:120
-},
-
-{
-name:"Carta 15",
-image:"carte/15.jpg",
-time:120
-}
+{name:"Rigore assegnato", image:"carta/1.jpg", time:120},
+{name:"Prossimo gol vale doppio", image:"carta/2.jpg", time:120},
+{name:"Gol capitano vale doppio", image:"carta/3.jpg", time:120},
+{name:"Tutti i gol valgono doppio (1 minuto)", image:"carta/4.jpg", time:60},
+{name:"Un uomo in meno", image:"carta/5.jpg", time:60},
+{name:"Portiere senza mani", image:"carta/6.jpg", time:120},
+{name:"Retropassaggio vietato", image:"carta/7.jpg", time:120},
+{name:"Vietato segnare da fuori area", image:"carta/8.jpg", time:120},
+{name:"Tutti i gol valgono doppio (2 minuti)", image:"carta/9.jpg", time:120},
+{name:"Rigore inverso", image:"carta/10.jpg", time:120},
+{name:"Gol del portiere vale triplo", image:"carta/11.jpg", time:120},
+{name:"Tutti portieri", image:"carta/12.jpg", time:120},
+{name:"Primo gol vale doppio", image:"carta/13.jpg", time:120},
+{name:"Si gioca 2v2", image:"carta/14.jpg", time:120},
+{name:"Gol di testa vale doppio", image:"carta/15.jpg", time:120}
 
 ];
 
 let deck = [...cards];
 let interval;
 
+updateDeckCounter();
+
 function drawCard(){
 
 if(deck.length===0){
-    deck=[...cards];
-    alert("Mazzo rimescolato!");
+
+deck = [...cards];
+
+alert("🔄 Mazzo rimescolato!");
+
 }
 
-const index=Math.floor(Math.random()*deck.length);
-const card=deck.splice(index,1)[0];
+const index = Math.floor(Math.random() * deck.length);
 
-document.getElementById("cardContainer").innerHTML=
-`<img src="${card.image}" alt="">`;
+const card = deck.splice(index,1)[0];
+
+document.getElementById("cardName").innerHTML = card.name;
+
+document.getElementById("cardContainer").innerHTML =
+`<img src="${card.image}" alt="${card.name}">`;
+
+updateDeckCounter();
 
 startTimer(card.time);
 
@@ -177,32 +146,45 @@ function startTimer(seconds){
 
 clearInterval(interval);
 
-let time=seconds;
+let time = seconds;
 
 update();
 
-interval=setInterval(()=>{
+interval = setInterval(()=>{
 
 time--;
 
 update();
 
-if(time<=0){
+if(time <= 0){
+
 clearInterval(interval);
-document.getElementById("timer").innerHTML="? EFFETTO TERMINATO";
+
+document.getElementById("timer").innerHTML =
+"✅ EFFETTO TERMINATO";
+
+document.getElementById("alarm").play();
+
 }
 
 },1000);
 
 function update(){
 
-let m=Math.floor(time/60);
-let s=time%60;
+let m = Math.floor(time/60);
+let s = time%60;
 
-document.getElementById("timer").innerHTML=
+document.getElementById("timer").innerHTML =
 `${m}:${s.toString().padStart(2,"0")}`;
 
 }
+
+}
+
+function updateDeckCounter(){
+
+document.getElementById("cardsLeft").innerHTML =
+`Carte rimanenti nel mazzo: ${deck.length}`;
 
 }
 
